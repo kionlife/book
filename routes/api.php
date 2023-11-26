@@ -46,7 +46,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Books endpoints
 Route::get('books/last', [BookController::class, 'last']);
 Route::get('books/search', [BookController::class, 'search']);
+Route::get('books/genre/{id}', [BookController::class, 'byGenre']);
 Route::apiResource('books', BookController::class);
 
-
-
+Route::get('check-auth', function () {
+    return response()->json(['message' => 'Authenticated'], 200);
+})->middleware('auth:sanctum');

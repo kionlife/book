@@ -1,3 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+#app {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    min-height: 50px;
+}
+
+footer {
+    min-height: 50px;
+}
+
+article {
+    flex: 1;
+}
+
+.pageTitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 30px auto 50px;
+    width: fit-content;
+    padding: 15px 30px;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    color: #454545;
+}
+

@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-4">
-        <div class="row">
+        <div class="row shadow rounded p-4">
             <div class="col-12">
 
                 <div v-if="loaded" class="book-detail">
@@ -28,13 +28,21 @@
         </div>
         <div class="row">
             <div class="col-12">
+                <h2 class="pageTitle">Примірники</h2>
+
+            </div>
+        </div>
+        <div class="row shadow rounded p-4">
+            <div class="col-12">
                 <div class="exchange-offers">
-                    <h3>Примірники</h3>
-                    <ul>
+                    <ul v-if="book.instance && book.instance.length">
                         <li v-for="instance in book.instance">
                             <button class="btn btn-outline-primary btn-sm" @click="makeExchangeOffer(instance.id)">Запропонувати обмін</button> <span>{{ instance.current.name }} (ID: {{ instance.id }})</span>
                         </li>
                     </ul>
+                    <p v-else>
+                        Примірників не знайдено
+                    </p>
                 </div>
 
             </div>
@@ -50,10 +58,27 @@
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="pageTitle">Інші книги цього жанру</h2>
+            </div>
+        </div>
+        <div class="row">
+            <Book
+                v-for="item in genreBooks"
+                :key="item.id"
+                :book="item" />
+        </div>
+    </div>
 </template>
 
 <script>
+import Book from "../../Blocks/Book.vue";
+
 export default {
+    components: {Book},
     props: {
         id: {
             type: Number,
@@ -63,6 +88,7 @@ export default {
     data() {
         return {
             book: [],
+            genreBooks: [],
             myBooks: [],
             selectedBook: null,
             selectedInstanceToReceive: null,
@@ -73,12 +99,24 @@ export default {
     created() {
         this.fetchBookDetails();
     },
+
+    watch: {
+        '$route.params.id': {
+            immediate: true,
+            handler(newId) {
+                window.scrollTo(0, 0);
+                this.fetchBookDetails();
+            }
+        }
+    },
     methods: {
         fetchBookDetails() {
             axios.get(`/api/books/${this.id}`)
                 .then(response => {
                     this.book = response.data;
+                    this.fetchGenreBooks();
                     this.loaded = true;
+
                 })
                 .catch(error => {
                     console.error('Error fetching book details:', error);
@@ -91,6 +129,15 @@ export default {
                 })
                 .catch(error => {
                     console.error('Error fetching my books:', error);
+                });
+        },
+        fetchGenreBooks() {
+            axios.get(`/api/books/genre/${this.book.genre_id}`)
+                .then(response => {
+                    this.genreBooks = response.data;
+                })
+                .catch(error => {
+                    console.error('Error fetching genre books:', error);
                 });
         },
         makeExchangeOffer(selectedInstanceToReceive) {

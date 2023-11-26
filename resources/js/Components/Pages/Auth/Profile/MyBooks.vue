@@ -1,12 +1,14 @@
 <template>
-    <div class="container">
+    <div class="container mt-4">
         <div class="row">
-            <div class="col-6">
-                <h2>Мої книги</h2>
+            <div class="col-12">
+                <h2 class="pageTitle">Мої книги</h2>
             </div>
-            <div class="col-6 d-flex justify-content-end">
-                <button @click="openAddBookInstanceForm" class="btn btn-info mx-2">Додати примірник</button>
-                <button @click="openAddBookForm" class="btn btn-primary">Додати книгу в каталог</button>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <button @click="openAddBookInstanceForm" class="btn btn-outline-primary">Додати примірник</button>
+                <button @click="openAddBookForm" class="btn btn-outline-primary mx-2">Додати книгу в каталог</button>
             </div>
         </div>
         <BookList

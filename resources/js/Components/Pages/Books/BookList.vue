@@ -2,7 +2,7 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-12">
-                <h1>Книги</h1>
+                <h2 class="pageTitle">Книги</h2>
             </div>
         </div>
         <div class="row">

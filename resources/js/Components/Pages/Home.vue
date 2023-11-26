@@ -1,18 +1,25 @@
 <template>
     <div class="banner">
-        <div class="container h-100">
+        <div class="bgDark"></div>
+        <div class="container h-100 z-2 position-relative">
             <div class="bg-dark-gray h-100 color-white d-flex flex-column justify-content-center align-items-center">
-                <h1>Обмін книгамиі</h1>
-                <h4>Відкрийте для себе нові книги</h4>
-                <router-link to="/books" class="btn btn-primary">Перейти до списку книг</router-link>
+                <h1 class="text-center">Ласкаво просимо до BookSharing</h1>
+                <p class="lead text-center mt-4">
+                    BookSharing – книжкове джерело, що об'єднує книголюбів! Це простір для обміну літературними шедеврами, досвідом та думками. З нами кожен читач має можливість відкривати нові горизонти та ділитися своїм літературними враженнями та читацьким досвідом.
+                </p>
+<!--                <p class="text-center mt-1">
+                    Ми віримо, що кожна книга має свою історію, але часом найцікавіші історії виникають, коли книга міняє свого читача.
+                </p>-->
+                <router-link to="/books" class="btn btn-outline-light">Перейти до списку книг</router-link>
             </div>
         </div>
     </div>
 
+
     <div class="container">
         <div class="row">
             <div class="col-12 text-center mx-4 my-4">
-                <h2>Останні книги</h2>
+                <h2 class="pageTitle">Останні книги</h2>
             </div>
         </div>
         <div class="row">
@@ -56,7 +63,18 @@ export default {
     .banner {
         background: url('/images/banner.jpg') no-repeat center center;
         background-size: cover;
-        height: 600px;
+        height: 700px;
+        position: relative;
+    }
+
+    .bgDark {
+        background: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
     }
 
     .color-white {

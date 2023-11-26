@@ -16,7 +16,7 @@ class ExchangeOfferController extends Controller {
 
     public function my() {
         $user = auth()->user();
-        $offers = ExchangeOffer::with('give_book.book', 'take_book.book', 'fromUser', 'toUser')->where('to_user_id', $user->id)->where('status', 'pending')->get();
+        $offers = ExchangeOffer::with('give_book.book', 'take_book.book', 'fromUser', 'toUser')->where('to_user_id', $user->id)->get();
 
         return response()->json($offers, 200);
     }

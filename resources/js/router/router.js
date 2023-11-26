@@ -70,9 +70,9 @@ index.beforeEach((to, from, next) => {
     const isLoggedIn = !!localStorage.getItem('access_token');
 
     if (to.meta.requiresAuth && !isLoggedIn) {
-        next({ path: '/auth' });
+        next({ path: '/login' });
     } else if (to.meta.guest && isLoggedIn) {
-        next({ path: '/' });
+        next({ path: '/login' });
     } else {
         next();
     }

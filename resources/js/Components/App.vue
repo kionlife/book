@@ -52,7 +52,9 @@
         </nav>
     </header>
 
-    <router-view></router-view>
+    <article>
+        <router-view></router-view>
+    </article>
 
     <footer class="bg-light text-center text-lg-start">
         <div class="text-center p-3">

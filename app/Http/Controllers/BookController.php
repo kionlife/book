@@ -19,6 +19,11 @@ class BookController extends Controller
         return response()->json($books);
     }
 
+    public function byGenre($id) {
+        $books = Book::with('category', 'genre', 'author')->where('genre_id', $id)->take(4)->get();
+        return response()->json($books);
+    }
+
     public function my() {
         $user = auth()->user();
         $books = BookInstance::with('book.category', 'book.genre', 'book.author')->where('current_user_id', $user->id)->get();

@@ -2,7 +2,7 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-12">
-                <h1>Мої пропозиції</h1>
+                <h2 class="pageTitle">Мої пропозиції</h2>
             </div>
         </div>
     </div>
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+
+import authService from "../../../../services/authService";
 
 export default {
     name: "MyOffers",
