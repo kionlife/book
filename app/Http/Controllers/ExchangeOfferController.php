@@ -16,23 +16,26 @@ class ExchangeOfferController extends Controller {
 
     public function my() {
         $user = auth()->user();
-        $offers = ExchangeOffer::with('instance.book.category', 'instance.book.genre', 'instance.book.author', 'fromUser', 'toUser')->where('from_user_id', $user->id)->orWhere('to_user_id', $user->id)->get();
+        $offers = ExchangeOffer::with('give_book.book', 'take_book.book', 'fromUser', 'toUser')->where('to_user_id', $user->id)->where('status', 'pending')->get();
 
         return response()->json($offers, 200);
     }
 
     public function store(Request $request) {
         $request->validate([
-            'book_instance_id' => 'required|exists:book_instances,id',
+            'give_book_instance_id' => 'required|exists:book_instances,id',
+            'take_book_instance_id' => 'required|exists:book_instances,id',
             'city' => 'string|max:255',
         ]);
 
-        $book_instance = BookInstance::findOrFail($request->input('book_instance_id'));
+        $give_book_instance = BookInstance::findOrFail($request->input('give_book_instance_id'));
+        $take_book_instance = BookInstance::findOrFail($request->input('take_book_instance_id'));
 
         $data = [
-            'book_instance_id' => $book_instance->id,
-            'from_user_id' => $book_instance->current_user_id,
-            'to_user_id' => auth()->user()->id,
+            'give_book_instance_id' => $give_book_instance->id,
+            'from_user_id' => auth()->user()->id,
+            'take_book_instance_id' => $take_book_instance->id,
+            'to_user_id' => $take_book_instance->current_user_id,
             'city' => 'NONE',
             'status' => 'pending',
         ];
@@ -48,8 +51,8 @@ class ExchangeOfferController extends Controller {
         $offer = ExchangeOffer::findOrFail($id);
         $offer->status = 'accepted';
         $offer->save();
-
-
-        return response()->json($offer, 200);
+        BookInstance::where('id', $offer->give_book_instance_id)->update(['current_user_id' => $offer->to_user_id]);
+        BookInstance::where('id', $offer->take_book_instance_id)->update(['current_user_id' => $offer->from_user_id]);
+        self::my();
     }
 }

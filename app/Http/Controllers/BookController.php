@@ -10,12 +10,12 @@ class BookController extends Controller
 {
     public function index() {
         //Get books with category and genre and paginate them
-        $books = Book::with('category', 'genre')->paginate(9);
+        $books = Book::with('category', 'genre', 'author')->paginate(9);
         return response()->json($books);
     }
 
     public function last() {
-        $books = Book::with('category', 'genre')->latest()->take(3)->get();
+        $books = Book::with('category', 'genre', 'author')->latest()->take(3)->get();
         return response()->json($books);
     }
 

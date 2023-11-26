@@ -10,15 +10,20 @@ class ExchangeOffer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'book_instance_id',
         'from_user_id',
+        'give_book_instance_id',
         'to_user_id',
+        'take_book_instance_id',
         'city',
         'status',
     ];
 
-    public function instance() {
-        return $this->belongsTo(BookInstance::class, 'book_instance_id');
+    public function give_book() {
+        return $this->belongsTo(BookInstance::class, 'give_book_instance_id');
+    }
+
+    public function take_book() {
+        return $this->belongsTo(BookInstance::class, 'take_book_instance_id');
     }
 
     public function fromUser()

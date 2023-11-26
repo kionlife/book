@@ -19,8 +19,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+    Route::get('books/my', [BookController::class, 'my']);
+    Route::post('books/instance', [BookController::class, 'createInstance']);
+
+    // Exchange offers endpoints
+    Route::get('/exchange-offers/my', [ExchangeOfferController::class, 'my']);
+    Route::post('/exchange-offers', [ExchangeOfferController::class, 'store']);
+    Route::post('/exchange-offers/{id}/accept', [ExchangeOfferController::class, 'accept']);
+    Route::post('/exchange-offers/{id}/reject', [ExchangeOfferController::class, 'reject']);
 });
 
 // Guest routes...
@@ -37,14 +45,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Books endpoints
 Route::get('books/last', [BookController::class, 'last']);
-Route::get('books/my', [BookController::class, 'my']);
 Route::get('books/search', [BookController::class, 'search']);
-Route::post('books/instance', [BookController::class, 'createInstance']);
 Route::apiResource('books', BookController::class);
 
-// Exchange offers endpoints
-Route::get('/exchange-offers/my', [ExchangeOfferController::class, 'my']);
-Route::post('/exchange-offers', [ExchangeOfferController::class, 'store']);
-Route::post('/exchange-offers/{id}/accept', [ExchangeOfferController::class, 'accept']);
-Route::post('/exchange-offers/{id}/reject', [ExchangeOfferController::class, 'reject']);
+
 

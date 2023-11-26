@@ -14,15 +14,17 @@ return new class extends Migration
         Schema::create('exchange_offers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('from_user_id');
+            $table->unsignedBigInteger('give_book_instance_id');
             $table->unsignedBigInteger('to_user_id');
-            $table->unsignedBigInteger('book_instance_id');
+            $table->unsignedBigInteger('take_book_instance_id');
             $table->string('city');
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
 
             $table->foreign('from_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('to_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('book_instance_id')->references('id')->on('book_instances')->onDelete('cascade');
+            $table->foreign('give_book_instance_id')->references('id')->on('book_instances')->onDelete('cascade');
+            $table->foreign('take_book_instance_id')->references('id')->on('book_instances')->onDelete('cascade');
         });
     }
 

@@ -1,12 +1,12 @@
 <template>
     <header>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow mb-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow">
             <!-- Container wrapper -->
-            <div class="container-fluid">
+            <div class="container">
 
                 <!-- Navbar brand -->
-                <a class="navbar-brand" href="#">Brand</a>
+                <a class="navbar-brand" href="#">BookSharing</a>
 
                 <!-- Toggle button -->
                 <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,9 +54,10 @@
 
     <router-view></router-view>
 
-    <footer>
-        &copy; 2023
-
+    <footer class="bg-light text-center text-lg-start">
+        <div class="text-center p-3">
+            © 2021 BookSharing
+        </div>
     </footer>
 </template>
 

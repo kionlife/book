@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx">
+    <div class="container mt-4">
         <div class="row">
             <div class="col-12">
 
@@ -13,7 +13,12 @@
                         <p class="category-genre">{{ book.category.name }} / {{ book.genre.name }}</p>
                         <p class="author">
                             Автор: {{ book.author.name }} <br>
-                            Рік: {{ book.year }}</p>
+                            Рік: {{ book.year }} <br>
+                            ISBN: {{ book.isbn }} <br>
+                            Мова: {{ book.language }} <br>
+                            Видавництво: {{ book.publisher }} <br>
+                            Сторінок: {{ book.pages }}
+                        </p>
                         <p class="description">{{ book.description }}</p>
 
 
@@ -27,7 +32,7 @@
                     <h3>Примірники</h3>
                     <ul>
                         <li v-for="instance in book.instance">
-                            <button class="btn btn-outline-primary btn-sm" @click="makeExchangeOffer">Запропонувати обмін</button> <span>{{ instance.current.name }}</span>
+                            <button class="btn btn-outline-primary btn-sm" @click="makeExchangeOffer(instance.id)">Запропонувати обмін</button> <span>{{ instance.current.name }} (ID: {{ instance.id }})</span>
                         </li>
                     </ul>
                 </div>
@@ -60,6 +65,7 @@ export default {
             book: [],
             myBooks: [],
             selectedBook: null,
+            selectedInstanceToReceive: null,
             loaded: false,
             createOffer: false,
         };
@@ -87,14 +93,15 @@ export default {
                     console.error('Error fetching my books:', error);
                 });
         },
-        makeExchangeOffer() {
+        makeExchangeOffer(selectedInstanceToReceive) {
             this.fetchMyBooks();
+            this.selectedInstanceToReceive = selectedInstanceToReceive;
             this.createOffer = true;
         },
         createExchangeOffer() {
             axios.post('/api/exchange-offers', {
-                book_instance_id: this.selectedBook,
-                book_id: this.id,
+                give_book_instance_id: this.selectedBook,
+                take_book_instance_id: this.selectedInstanceToReceive,
             })
                 .then(response => {
                     console.log(response);
