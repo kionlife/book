@@ -10,7 +10,7 @@ class BookController extends Controller
 {
     public function index() {
         //Get books with category and genre and paginate them
-        $books = Book::with('category', 'genre', 'author')->paginate(9);
+        $books = Book::with('category', 'genre', 'author')->paginate(12);
         return response()->json($books);
     }
 
@@ -45,6 +45,7 @@ class BookController extends Controller
         $instance = BookInstance::create([
             'book_id' => $book->id,
             'user_owner_id' => auth()->user()->id,
+            'current_user_id' => auth()->user()->id,
             'description' => $request->input('description') ?? '',
         ]);
 

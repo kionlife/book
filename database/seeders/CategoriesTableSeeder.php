@@ -13,7 +13,7 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        $categories = ['Fiction', 'Non-Fiction', 'Science', 'Mathematics'];
+        $categories = ['Наукова література', 'Художня література', 'Дитяча література', 'Інше'];
 
         foreach ($categories as $category) {
             Category::create(['name' => $category]);

@@ -8,78 +8,81 @@
         <div class="row mb-4">
             <div class="col-12">
                 <button @click="openAddBookInstanceForm" class="btn btn-outline-primary">Додати примірник</button>
-                <button @click="openAddBookForm" class="btn btn-outline-primary mx-2">Додати книгу в каталог</button>
+<!--                <button @click="openAddBookForm" class="btn btn-outline-primary mx-2">Додати книгу в каталог</button>-->
             </div>
         </div>
+
+        <div class="container" v-if="addBook">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Додати книгу в каталог</h2>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Add book form -->
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="title">Назва</label>
+                        <input type="text" class="form-control" id="title" placeholder="Назва">
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Автор</label>
+                        <input type="text" class="form-control" id="author" placeholder="Автор">
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Рік</label>
+                        <input type="text" class="form-control" id="year" placeholder="Рік">
+                    </div>
+                    <div class="form-group">
+                        <label for="genre">Жанр</label>
+                        <input type="text" class="form-control" id="genre" placeholder="Жанр">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Категорія</label>
+                        <input type="text" class="form-control" id="category" placeholder="Категорія">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Опис</label>
+                        <textarea class="form-control" id="description" rows="3"></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-primary">Додати</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container bg-white mb-4 p-4 shadow rounded" v-if="addBookInstance">
+            <div class="row">
+                <div class="col-12">
+                    <h4>Додати примірник</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="title">Назва</label>
+                        <input type="text" class="form-control" id="title" placeholder="Назва"
+                               v-model="addBookInstanceForm.searchTerm">
+                    </div>
+                    <div class="form-group">
+                        <ul>
+                            <li class="mt-2" v-for="book in foundedBooks" :key="book.id">
+                                <button @click="createBookInstance(book.id)" type="button" class="btn btn-primary btn-sm">Обрати</button> {{ book.title }} - {{ book.author.name }} - {{ book.year }} - {{ book.isbn }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <BookList
             v-for="book in books"
             :key="book.id"
             :book="book"/>
     </div>
 
-    <div class="container" v-if="addBook">
-        <div class="row">
-            <div class="col-12">
-                <h2>Додати книгу в каталог</h2>
-            </div>
-        </div>
-        <div class="row">
-            <!-- Add book form -->
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="title">Назва</label>
-                    <input type="text" class="form-control" id="title" placeholder="Назва">
-                </div>
-                <div class="form-group">
-                    <label for="author">Автор</label>
-                    <input type="text" class="form-control" id="author" placeholder="Автор">
-                </div>
-                <div class="form-group">
-                    <label for="year">Рік</label>
-                    <input type="text" class="form-control" id="year" placeholder="Рік">
-                </div>
-                <div class="form-group">
-                    <label for="genre">Жанр</label>
-                    <input type="text" class="form-control" id="genre" placeholder="Жанр">
-                </div>
-                <div class="form-group">
-                    <label for="category">Категорія</label>
-                    <input type="text" class="form-control" id="category" placeholder="Категорія">
-                </div>
-                <div class="form-group">
-                    <label for="description">Опис</label>
-                    <textarea class="form-control" id="description" rows="3"></textarea>
-                </div>
 
-                <button type="button" class="btn btn-primary">Додати</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" v-if="addBookInstance">
-        <div class="row">
-            <div class="col-12">
-                <h3>Додати примірник</h3>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="title">Назва</label>
-                    <input type="text" class="form-control" id="title" placeholder="Назва"
-                           v-model="addBookInstanceForm.searchTerm">
-                </div>
-                <div class="form-group">
-                    <ul>
-                        <li class="mt-2" v-for="book in foundedBooks" :key="book.id">
-                            <button @click="createBookInstance(book.id)" type="button" class="btn btn-primary btn-sm">Обрати</button> {{ book.title }} - {{ book.author.name }} - {{ book.year }} - {{ book.isbn }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-3 mb-3 ">
+    <div class="col-md-3 mb-3 d-flex align-items-stretch">
         <div class="card shadow">
             <router-link :to="{ name: 'BookDetail', params: { id: book.id } }">
                 <img :src="book.image" class="card-img-top" :alt="book.title">
@@ -24,3 +24,17 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.card {
+    display: flex;
+    flex-direction: column;
+}
+.card-img-top {
+    height: 450px; /* Adjust and add object-fit for images */
+    object-fit: cover;
+}
+.card-body {
+    flex-grow: 1;
+}
+</style>

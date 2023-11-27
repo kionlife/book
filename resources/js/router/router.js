@@ -4,6 +4,7 @@ import BookList from '../Components/Pages/Books/BookList.vue';
 import BookDetail from '../Components/Pages/Books/BookDetail.vue';
 import Home from '../Components/Pages/Home.vue';
 import Login from '../Components/Pages/Auth/Login.vue';
+import Register from '../Components/Pages/Auth/Register.vue';
 import ProfileEdit from "../Components/Pages/Auth/Profile/Edit.vue";
 import MyBooks from "../Components/Pages/Auth/Profile/MyBooks.vue";
 import MyOffers from "../Components/Pages/Auth/Profile/MyOffers.vue";
@@ -29,6 +30,14 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login,
+        meta: {
+            guest: true
+        }
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register,
         meta: {
             guest: true
         }

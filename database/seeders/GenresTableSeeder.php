@@ -13,7 +13,7 @@ class GenresTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $genres = ['Adventure', 'Romance', 'Fantasy', 'Horror', 'Biography'];
+        $genres = ['Фентезі', 'Детектив', 'Пригоди', 'Роман', 'Драма', 'Історичний', 'Наукова фантастика', 'Жахи', 'Комедія', 'Трилер', 'Бойовик', 'Фантастика', 'Поезія', 'Психологія', 'Публіцистика', 'Релігія', 'Саморозвиток', 'Спорт', 'Техніка', 'Туризм', 'Філософія', 'Хобі', 'Юмор', 'Іноземна література', 'Інше'];
 
         foreach ($genres as $genre) {
             Genre::create(['name' => $genre]);

@@ -48,13 +48,13 @@
             </div>
         </div>
         <div v-if="createOffer" class="row">
-            <div class="col-12 col-md-6 border">
-                <h3>Оберіть книгу для обміну</h3>
+            <div class="col-12 col-md-12 border bg-white">
+                <p>Оберіть книгу для обміну</p>
                 <div v-for="item in myBooks">
                     <input type="radio" :id="item.id" :value="item.id" v-model="selectedBook">
                     <label :for="item.id">{{ item.book.title }}</label>
                 </div>
-                <button class="btn btn-primary" @click="createExchangeOffer">Підтвердити</button>
+                <button class="btn btn-primary my-2" @click="createExchangeOffer">Підтвердити</button>
             </div>
         </div>
     </div>
@@ -76,6 +76,8 @@
 
 <script>
 import Book from "../../Blocks/Book.vue";
+import { useToast } from "vue-toastification";
+
 
 export default {
     components: {Book},
@@ -94,6 +96,7 @@ export default {
             selectedInstanceToReceive: null,
             loaded: false,
             createOffer: false,
+            toast: useToast(),
         };
     },
     created() {
@@ -151,8 +154,8 @@ export default {
                 take_book_instance_id: this.selectedInstanceToReceive,
             })
                 .then(response => {
-                    console.log(response);
                     this.createOffer = false;
+                    this.toast.success('Пропозиція обміну надіслана');
                 })
                 .catch(error => {
                     console.error('Error creating exchange offer:', error);

@@ -11,7 +11,8 @@ class BookInstance extends Model
 
     protected $fillable = [
         'book_id',
-        'user_owner_id'
+        'user_owner_id',
+        'current_user_id',
     ];
 
     public function book() {

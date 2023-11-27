@@ -8,15 +8,15 @@
     </div>
 
     <div class="container">
-        <div v-for="offer in offers" class="row border rounded shadow mb-2">
-            <div class="col-12 col-md-8 p-4">
+        <div v-for="offer in offers" :class="{'row border rounded shadow mb-2': true, 'old': offer.status !== 'pending'}">
+            <div class="col-12 p-4">
                 Пропозиція від {{ offer.from_user.name }}. <br>
                 Я пропоную <b>{{ offer.give_book.book.title }} (ID: {{ offer.give_book.id }})</b> <br>
                 Ви даєте мені <b>{{ offer.take_book.book.title }} (ID: {{ offer.take_book.id }})</b> <br>
             </div>
-            <div class="col-12 col-md-4 p-4 d-flex justify-content-end">
+            <div v-if="offer.status === 'pending'" class="col-12 p-4">
                 <button @click="acceptOffer(offer.id)" class="btn btn-primary btn-sm mx-2">Прийняти</button>
-                <button @click="rejectOffer" class="btn btn-danger btn-sm">Відхилити</button>
+                <button @click="rejectOffer(offer.id)" class="btn btn-danger btn-sm">Відхилити</button>
             </div>
         </div>
     </div>
@@ -49,15 +49,27 @@ export default {
         acceptOffer(id) {
             axios.post(`/api/exchange-offers/${id}/accept`)
                 .then(response => {
-                    this.offers = response.data;
+                    this.fetchOffers();
                 })
                 .catch(error => {
                     console.error('There was an error fetching the offers:', error);
                 });
         },
-        rejectOffer() {
-
+        rejectOffer(id) {
+            axios.post(`/api/exchange-offers/${id}/reject`)
+                .then(response => {
+                    this.fetchOffers();
+                })
+                .catch(error => {
+                    console.error('There was an error fetching the offers:', error);
+                });
         }
     }
 };
 </script>
+
+<style scoped>
+    .old {
+        opacity: 0.75;
+    }
+</style>

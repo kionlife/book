@@ -53,6 +53,10 @@ class ExchangeOfferController extends Controller {
         $offer->save();
         BookInstance::where('id', $offer->give_book_instance_id)->update(['current_user_id' => $offer->to_user_id]);
         BookInstance::where('id', $offer->take_book_instance_id)->update(['current_user_id' => $offer->from_user_id]);
-        self::my();
+    }
+    public function reject(Request $request, $id) {
+        $offer = ExchangeOffer::findOrFail($id);
+        $offer->status = 'rejected';
+        $offer->save();
     }
 }
