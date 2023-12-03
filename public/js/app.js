@@ -17571,6 +17571,13 @@ __webpack_require__.r(__webpack_exports__);
         console.error('There was an error fetching the books:', error);
       });
     },
+    onImageChange: function onImageChange(event) {
+      var file = event.target.files[0];
+      console.log(file);
+      if (file) {
+        this.addBookForm.image = file;
+      }
+    },
     createBook: function createBook() {
       var _this6 = this;
       axios.post('/api/books', {
@@ -17585,6 +17592,10 @@ __webpack_require__.r(__webpack_exports__);
         image: this.addBookForm.image,
         publisher: this.addBookForm.publisher,
         language: this.addBookForm.language
+      }, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }).then(function (response) {
         _this6.addBook = false;
       })["catch"](function (error) {
@@ -17725,7 +17736,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    console.log(this.avatarPreview);
     this.avatarPreview = this.user.avatar || null;
   }
 });
@@ -18636,15 +18646,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
       return $data.addBookForm.pages = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.addBookForm.pages]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [_hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.addBookForm.pages]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [_hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "file",
     "class": "form-control",
     id: "image",
-    placeholder: "Зображення",
-    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
-      return $data.addBookForm.image = $event;
+    onChange: _cache[11] || (_cache[11] = function () {
+      return $options.onImageChange && $options.onImageChange.apply($options, arguments);
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.addBookForm.image]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [_hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 32 /* NEED_HYDRATION */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [_hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "form-control",
     id: "publisher",
@@ -18910,7 +18919,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     alt: "Avatar",
     "class": "avatar",
     width: "100"
-  }, null, 8 /* PROPS */, _hoisted_5)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
+  }, null, 8 /* PROPS */, _hoisted_5)) : this.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
     key: 1,
     src: this.user.avatar,
     alt: "Avatar",
@@ -19536,10 +19545,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 window.axios.defaults.withCredentials = true;
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
-console.log("9d81bd42fe029d743348");
-console.log("eu");
-console.log("1718470");
-console.log("818b780b75b80afd9f18");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   app_id: "1718470",

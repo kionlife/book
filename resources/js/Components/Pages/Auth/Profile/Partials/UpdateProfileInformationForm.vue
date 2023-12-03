@@ -12,7 +12,7 @@
             Аватар
         </label>
         <img :src="avatarPreview" v-if="avatarPreview" alt="Avatar" class="avatar" width="100">
-        <img :src="this.user.avatar" v-if="this.user" alt="Avatar" class="avatar" width="100">
+        <img :src="this.user.avatar" v-else-if="this.user" alt="Avatar" class="avatar" width="100">
         <input type="file" name="avatar" id="avatar" class="form-control mt-1" @change="onAvatarChange">
     </div>
 
@@ -42,7 +42,6 @@ export default {
         }
     },
     created() {
-        console.log(this.avatarPreview);
         this.avatarPreview = this.user.avatar || null;
     }
 

@@ -14,11 +14,6 @@ window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('m
 window.axios.defaults.withCredentials = true;
 
 window.Pusher = require('pusher-js');
-console.log(process.env.MIX_PUSHER_APP_KEY);
-console.log(process.env.MIX_PUSHER_APP_CLUSTER);
-console.log(process.env.MIX_PUSHER_APP_ID);
-console.log(process.env.MIX_PUSHER_APP_SECRET);
-
 window.Echo = new Echo({
     broadcaster: 'pusher',
     app_id: process.env.MIX_PUSHER_APP_ID,

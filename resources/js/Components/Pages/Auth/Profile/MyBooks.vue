@@ -76,7 +76,7 @@
 
                     <div class="form-group">
                         <label for="image">Зображення</label>
-                        <input type="text" class="form-control" id="image" placeholder="Зображення" v-model="addBookForm.image">
+                        <input type="file" class="form-control" id="image" @change="onImageChange">
                     </div>
 
                     <div class="form-group">
@@ -243,6 +243,13 @@ export default {
                     console.error('There was an error fetching the books:', error);
                 });
         },
+        onImageChange(event) {
+            const file = event.target.files[0];
+            console.log(file);
+            if (file) {
+                this.addBookForm.image = file;
+            }
+        },
         createBook() {
             axios.post('/api/books', {
                 title: this.addBookForm.title,
@@ -256,6 +263,10 @@ export default {
                 image: this.addBookForm.image,
                 publisher: this.addBookForm.publisher,
                 language: this.addBookForm.language,
+            },{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             }).then(response => {
                 this.addBook = false;
             }).catch(error => {

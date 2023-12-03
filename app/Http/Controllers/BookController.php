@@ -62,10 +62,18 @@ class BookController extends Controller
             'category_id' => 'required|exists:categories,id',
             'genre_id' => 'required|exists:genres,id',
             'description' => 'string',
-            'image' => 'string',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+
         ]);
 
         $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('books', 'public');
+            //full url to image
+            $data['image'] = '/storage/' . $path;
+        }
+
         $data['user_id'] = auth()->user()->id;
 
         $book = Book::create($data);
