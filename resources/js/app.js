@@ -10,6 +10,7 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import store from './store/store';
 
+
 axios.interceptors.response.use(
     response => response,
     error => {

@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'bio',
+        'avatar'
     ];
 
     /**
@@ -42,4 +44,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the user's avatar full path.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getAvatarAttribute($value) {
+        return $value ? asset('storage/' . $value) : asset('images/default-avatar.png');
+    }
+
+    public function messages() {
+        return $this->hasMany(Message::class);
+    }
 }

@@ -33,6 +33,9 @@
                                 <router-link class="nav-item nav-link" to="/my-offers">Мої пропозиції</router-link>
                             </li>
                             <li>
+                                <router-link class="nav-item nav-link" to="/messages">Чати</router-link>
+                            </li>
+                            <li>
                                 <a class="nav-item nav-link" href="#" @click="logout">Вихід</a>
                             </li>
                         </ul>

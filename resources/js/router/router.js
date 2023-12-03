@@ -8,6 +8,7 @@ import Register from '../Components/Pages/Auth/Register.vue';
 import ProfileEdit from "../Components/Pages/Auth/Profile/Edit.vue";
 import MyBooks from "../Components/Pages/Auth/Profile/MyBooks.vue";
 import MyOffers from "../Components/Pages/Auth/Profile/MyOffers.vue";
+import Chats from "../Components/Pages/Auth/Profile/Chats.vue";
 
 const routes = [
     {
@@ -62,6 +63,14 @@ const routes = [
         path: '/my-offers',
         name: 'MyOffers',
         component: MyOffers,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/messages',
+        name: 'Messages',
+        component: Chats,
         meta: {
             requiresAuth: true
         }

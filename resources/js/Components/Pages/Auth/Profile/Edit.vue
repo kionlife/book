@@ -1,14 +1,34 @@
 <template>
-    <div class="container">
+    <div class="container mt-4">
         <div class="row">
             <div class="col-12">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Профіль користувача {{ user.name }}
-                    ({{ user.id }})</h2>
+                <h2 class="pageTitle">Профіль користувача {{ user.name }}</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
 
                 <div class="py-12">
-                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                            <UpdatePasswordForm class="max-w-xl"/>
+                    <div class="max-w-7xl mx-auto space-y-6">
+                        <div class="p-4 row shadow rounded">
+                            <UpdatePasswordForm
+                                class="max-w-xl"
+                                :user="user"
+                            />
+                            <UpdateProfileInformationForm
+                                class="max-w-xl"
+                                :user="user"
+                                @avatarChanged="handleAvatarChange"
+                            />
+
+                        </div>
+                        <div class="row">
+                        <div class="col-12 col-md-4">
+                            <button type="button" class="btn btn-primary mt-4" @click="save">
+                                <span>Зберегти</span>
+                            </button>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -21,9 +41,10 @@
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
 import {useStore} from 'vuex';
 import authService from '../../../../services/authService';
+import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.vue";
 
 export default {
-    components: {UpdatePasswordForm},
+    components: {UpdateProfileInformationForm, UpdatePasswordForm},
     data() {
         return {
             user: [
@@ -31,7 +52,8 @@ export default {
                     name: '',
                     email: '',
                 }
-            ]
+            ],
+            avatarFile: null,
         }
     },
     setup() {
@@ -39,22 +61,51 @@ export default {
         return {store};
     },
     methods: {
-        setUser() {
-            if (this.store.state.user) {
-                this.user = this.store.state.user;
-            } else {
-                authService.getUser()
-                    .then(response => {
-                        this.user = response.data;
-                    })
-                    .catch(error => {
-                        console.error('There was an error fetching the user:', error);
-                    });
+        getUser() {
+            authService.getUser()
+                .then(response => {
+                    this.user = response;
+                })
+                .catch(error => {
+                    console.error('There was an error fetching the user:', error);
+                });
+        },
+        handleAvatarChange(file) {
+            this.avatarFile = file;
+        },
+        save() {
+            let formData = new FormData();
+            Object.keys(this.user).forEach(key => {
+                formData.append(key, this.user[key]);
+            });
+
+            if (this.avatarFile) {
+                formData.append('avatar', this.avatarFile);
             }
+
+            Object.keys(this.user).forEach(key => {
+                if (!(key === 'password' || key === 'current_password') || this.user[key]) {
+                    formData.append(key, this.user[key]);
+                }
+            });
+
+            axios.post('/api/user/update', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then(response => {
+                    this.user = response.data;
+                    console.log('User data updated successfully');
+                })
+                .catch(error => {
+                    console.error('There was an error updating the user data:', error);
+                });
         }
+
     },
     created() {
-        this.setUser();
+        this.getUser();
     }
 };
 </script>

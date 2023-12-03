@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookInstance;
+use App\Models\Category;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -15,7 +18,7 @@ class BookController extends Controller
     }
 
     public function last() {
-        $books = Book::with('category', 'genre', 'author')->latest()->take(3)->get();
+        $books = Book::with('category', 'genre', 'author')->latest()->take(8)->get();
         return response()->json($books);
     }
 
@@ -58,12 +61,14 @@ class BookController extends Controller
             'author_id' => 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
             'genre_id' => 'required|exists:genres,id',
-            'description' => 'required|string',
-            'image' => 'required|string',
-            'user_id' => 'required|exists:users,id',
+            'description' => 'string',
+            'image' => 'string',
         ]);
 
-        $book = Book::create($request->all());
+        $data = $request->all();
+        $data['user_id'] = auth()->user()->id;
+
+        $book = Book::create($data);
 
         return response()->json($book, 201);
     }
@@ -82,6 +87,21 @@ class BookController extends Controller
             ->get();
 
         return response()->json($books);
+    }
+
+    public function genres() {
+        $genres = Genre::all();
+        return response()->json($genres);
+    }
+
+    public function authors(Request $request) {
+        $authors = Author::where('name', 'LIKE', "%{$request->input('name')}%")->take(15)->get();
+        return response()->json($authors);
+    }
+
+    public function categories() {
+        $categories = Category::all();
+        return response()->json($categories);
     }
 
     // Add methods for creating, updating, and deleting books as per your needs

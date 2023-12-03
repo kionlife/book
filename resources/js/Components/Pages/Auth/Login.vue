@@ -12,7 +12,7 @@
                                 <div class="form mb-3">
                                     <input class="form-control mb-2" id="inputEmail" type="email" placeholder="Email" v-model="email" />
 
-                                    <input class="form-control" id="inputPassword" type="password" placeholder="Password" v-model="password" />
+                                    <input class="form-control" id="inputPassword" type="password" placeholder="Пароль" v-model="password" />
                                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                         <router-link to="/register" class="small">Зареєструватися</router-link>
                                         <button type="button" class="btn btn-primary" @click="login">Вхід</button>

@@ -5,30 +5,42 @@
  */
 
 import axios from 'axios';
+import Echo from 'laravel-echo';
+
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+window.axios.defaults.withCredentials = true;
 
+window.Pusher = require('pusher-js');
+console.log(process.env.MIX_PUSHER_APP_KEY);
+console.log(process.env.MIX_PUSHER_APP_CLUSTER);
+console.log(process.env.MIX_PUSHER_APP_ID);
+console.log(process.env.MIX_PUSHER_APP_SECRET);
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    app_id: process.env.MIX_PUSHER_APP_ID,
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    secret: process.env.MIX_PUSHER_APP_SECRET,
+    encrypted: false,
+    authorizer: (channel, options) => {
+        return {
+            authorize: (socketId, callback) => {
+                axios.post('/api/broadcasting/auth', {
+                    socket_id: socketId,
+                    channel_name: channel.name
+                })
+                    .then(response => {
+                        callback(false, response.data);
+                    })
+                    .catch(error => {
+                        callback(true, error);
+                    });
+            }
+        };
+    },
 
-// import Echo from 'laravel-echo';
-
-// import Pusher from 'pusher-js';
-// window.Pusher = Pusher;
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: import.meta.env.VITE_PUSHER_APP_KEY,
-//     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
-//     wsHost: import.meta.env.VITE_PUSHER_HOST ? import.meta.env.VITE_PUSHER_HOST : `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
-//     wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
-//     wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
-//     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
-//     enabledTransports: ['ws', 'wss'],
-// });
+});
