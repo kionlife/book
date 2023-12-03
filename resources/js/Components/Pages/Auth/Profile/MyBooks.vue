@@ -136,6 +136,7 @@
 
 <script>
 import BookList from "../../../Blocks/BookList";
+import {useToast} from "vue-toastification";
 
 export default {
     name: "MyBooks",
@@ -177,7 +178,8 @@ export default {
                 category: {
                     name: ''
                 }
-            }
+            },
+            toast: useToast()
         };
     },
     created() {
@@ -269,8 +271,10 @@ export default {
                 }
             }).then(response => {
                 this.addBook = false;
+                this.toast.success('Книгу додано!');
+                this.fetchBooks();
             }).catch(error => {
-                console.error('There was an error fetching the books:', error);
+
             });
         },
         createBookInstance(bookId) {

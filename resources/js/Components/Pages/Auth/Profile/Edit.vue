@@ -12,10 +12,60 @@
                 <div class="py-12">
                     <div class="max-w-7xl mx-auto space-y-6">
                         <div class="p-4 row shadow rounded">
-                            <UpdatePasswordForm
-                                class="max-w-xl"
-                                :user="user"
-                            />
+                            <div class="col-12 col-lg-4">
+                                <div class="passwordBlock">
+                                    <label for="current_password" class="block text-sm font-medium text-gray-700">
+                                        Поточний пароль
+                                    </label>
+
+                                    <div class="mt-1">
+                                        <input
+                                            id="current_password"
+                                            type="password"
+                                            class="form-control w-100"
+                                            v-model="user.current_password"
+                                            autocomplete="current-password"
+                                        />
+                                    </div>
+
+                                </div>
+
+                                <!-- New Password -->
+                                <div class="mt-6 passwordBlock">
+                                    <label for="password" class="block text-sm font-medium text-gray-700">
+                                        Новий пароль
+                                    </label>
+
+                                    <div class="mt-1">
+                                        <input
+                                            id="password"
+                                            type="password"
+                                            class="form-control"
+                                            v-model="user.password"
+                                            autocomplete="new-password"
+                                        />
+                                    </div>
+
+                                </div>
+
+                                <!-- Confirm New Password -->
+                                <div class="mt-6 passwordBlock">
+                                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
+                                        Підтвердити новий пароль
+                                    </label>
+
+                                    <div class="mt-1">
+                                        <input
+                                            id="password_confirmation"
+                                            type="password"
+                                            class="form-control"
+                                            v-model="user.password_confirmation"
+                                            autocomplete="new-password"
+                                        />
+                                    </div>
+
+                                </div>
+                            </div>
                             <UpdateProfileInformationForm
                                 class="max-w-xl"
                                 :user="user"
@@ -38,13 +88,13 @@
 </template>
 
 <script>
-import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
 import {useStore} from 'vuex';
 import authService from '../../../../services/authService';
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.vue";
+import {useToast} from "vue-toastification";
 
 export default {
-    components: {UpdateProfileInformationForm, UpdatePasswordForm},
+    components: {UpdateProfileInformationForm},
     data() {
         return {
             user: [
@@ -54,6 +104,7 @@ export default {
                 }
             ],
             avatarFile: null,
+            toast: useToast()
         }
     },
     setup() {
@@ -74,20 +125,20 @@ export default {
             this.avatarFile = file;
         },
         save() {
-            let formData = new FormData();
-            Object.keys(this.user).forEach(key => {
-                formData.append(key, this.user[key]);
-            });
-
-            if (this.avatarFile) {
-                formData.append('avatar', this.avatarFile);
+            let formData = {
+                bio: this.user.bio,
             }
 
-            Object.keys(this.user).forEach(key => {
-                if (!(key === 'password' || key === 'current_password') || this.user[key]) {
-                    formData.append(key, this.user[key]);
-                }
-            });
+            console.log(this.user);
+            if (this.avatarFile) {
+                formData.avatar = this.avatarFile;
+            }
+
+            if (this.user.current_password) {
+                formData.current_password = this.user.current_password;
+                formData.password = this.user.password;
+                formData.password_confirmation = this.user.password_confirmation;
+            }
 
             axios.post('/api/user/update', formData, {
                 headers: {
@@ -96,10 +147,10 @@ export default {
             })
                 .then(response => {
                     this.user = response.data;
-                    console.log('User data updated successfully');
+                    this.toast.success('Профіль успішно оновлено!');
                 })
                 .catch(error => {
-                    console.error('There was an error updating the user data:', error);
+                    this.toast.error('There was an error updating the profile:', error);
                 });
         }
 

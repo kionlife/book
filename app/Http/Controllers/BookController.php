@@ -78,6 +78,13 @@ class BookController extends Controller
 
         $book = Book::create($data);
 
+        $instance = BookInstance::create([
+            'book_id' => $book->id,
+            'user_owner_id' => auth()->user()->id,
+            'current_user_id' => auth()->user()->id,
+            'description' => $request->input('description') ?? '',
+        ]);
+
         return response()->json($book, 201);
     }
 

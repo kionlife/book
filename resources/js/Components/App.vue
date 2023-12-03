@@ -61,7 +61,7 @@
 
     <footer class="bg-light text-center text-lg-start">
         <div class="text-center p-3">
-            © 2021 BookSharing
+            © 2023 BookSharing
         </div>
     </footer>
 </template>
